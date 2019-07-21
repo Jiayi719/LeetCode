@@ -1,0 +1,88 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        if(l1 == nullptr && l2 == nullptr)
+            return nullptr;
+        if(l1 == nullptr)
+            return l2;
+        if(l2 == nullptr)
+            return l1;
+        
+        vector<int> num1 = listToNumber(l1);
+        vector<int> num2 = listToNumber(l2);
+        vector<int> num = addTwoVectors(num1, num2);
+            
+        ListNode* l = numberToList(num);
+        
+        return l;
+    }
+    
+    vector<int> listToNumber(ListNode* l) {
+        if(l == nullptr)
+            return {};
+        
+        ListNode* node = l;
+        vector<int> num;
+        while(node != nullptr) {
+            num.push_back(node->val);
+            node = node->next;
+        }
+        
+        return num;      
+    }
+    
+    vector<int> addTwoVectors(vector<int> num1, vector<int> num2) {
+        int len = num1.size() > num2.size() ? num1.size() : num2.size();
+        for(int i = num1.size(); i < len; ++i)
+            num1.push_back(0);
+        for(int i = num2.size(); i < len; ++i)
+            num2.push_back(0);
+        
+        vector<int> num;
+        bool carry = false;
+        int digit = 0;
+        for(int i = 0; i < len; ++i) {
+            if(carry)
+                digit = num1[i] + num2[i] + 1;
+            else
+                digit = num1[i] + num2[i];
+            if(digit > 9)
+            {
+                num.push_back(digit - 10);
+                carry = true;
+            }
+            else
+            {
+                num.push_back(digit);
+                carry = false;
+            }         
+        }
+        if(carry)
+            num.push_back(1);
+        
+        return num;
+    }
+    
+    ListNode* numberToList(vector<int> num) {
+        if(num.empty())
+            return nullptr;
+        
+        ListNode* l = new ListNode(num[0]);
+        ListNode* node = l;
+        for(int i = 1; i < num.size(); ++i) {
+            ListNode* temp = new ListNode(num[i]);
+            node->next = temp;
+            node = node->next; 
+        }
+        
+        return l;
+    }
+};
