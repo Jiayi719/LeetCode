@@ -1,0 +1,84 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /* Reverse a linked list iteratively */
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr)
+            return nullptr;
+        
+        ListNode* current = head;
+        ListNode* prev = nullptr;
+        ListNode* next = nullptr;
+        while(current != nullptr) {
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        }
+        
+        return prev;
+    }
+    
+    /* Reverse a linked list using a stack */
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr)
+            return nullptr;
+        
+        stack<ListNode*> stack_lnode;
+        ListNode* node = head;
+        while(node != nullptr) {
+            stack_lnode.push(node);
+            node = node->next;
+        }
+        
+        ListNode* tail = stack_lnode.top();
+        stack_lnode.pop();
+        ListNode* prev = tail;
+        while(!stack_lnode.empty()) {
+            ListNode* current = stack_lnode.top();
+            stack_lnode.pop();
+            prev->next = current;
+            prev = current;
+        }
+        prev->next = nullptr;
+        
+        return tail;
+    }
+    
+    /* Reverse a linked list recursively */
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr)
+            return nullptr;
+        
+        ListNode* node = head;
+        int len = 1;
+        while(node->next != nullptr) {
+            node = node->next;
+            ++len;
+        }
+        
+        return reverseListCore(head, len);
+    }
+    
+    ListNode* reverseListCore(ListNode* head, int len) {
+        if(len == 1) {
+            head->next = nullptr;
+            return head;
+        }
+            
+        ListNode* tail = head;
+        for(int i = 1; i < len; ++i) {
+            tail = tail->next;
+        }
+        tail->next = reverseListCore(head, len-1);
+        
+        return tail;
+    }    
+};
