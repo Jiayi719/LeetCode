@@ -1,0 +1,41 @@
+思路：将区间内的节点进行首尾两两交换，啊呸，应该是交换节点的val值，否则涉及太多节点next值的设置，首先找到链表中位置为m和n的节点，交换两个节点的val值，
+然后m往前移动一个位置，n往后移动一个位置，继续交换对应的两个节点的val值，直到m=n或者m>n时停止移动。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        if(head == nullptr)
+            return nullptr;
+        
+        if(m == n)
+            return head;
+        
+        while(m < n) {
+            ListNode* m_node = head;
+            for(int i = 1; i < m; ++i) {
+                m_node = m_node->next;
+            }
+        
+            ListNode* n_node = head;
+            for(int i = 1; i < n; ++i) {
+                n_node = n_node->next;
+            }
+        
+            int temp = m_node->val;
+            m_node->val = n_node->val;
+            n_node->val = temp;
+            ++m;
+            --n;
+        
+        }
+        
+        return head;
+    }
+};
