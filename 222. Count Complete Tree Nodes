@@ -1,0 +1,36 @@
+思路：层序遍历完全二叉树，每次出栈时计数加1，当碰到第一个空节点时停止计数
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root == nullptr)
+            return 0;
+        
+        queue<TreeNode*> queue_tnode;
+        queue_tnode.push(root);
+        int num = 0;
+        while(!queue_tnode.empty()) {
+            TreeNode* node = queue_tnode.front();
+            queue_tnode.pop();
+            
+            if(node == nullptr) {
+                break;
+            }
+            else {
+                num++;
+                queue_tnode.push(node->left);
+                queue_tnode.push(node->right);
+            }
+        }
+        
+        return num;
+    }
+};
