@@ -1,0 +1,42 @@
+思路：先找出当前区间的最大值对应的索引构建根节点，然后修改区间范围递归地构建左右子树，尤其注意递归的终止条件有两个
+第一，当区间的开始索引大于结束索引时，对应空节点
+第二，当区间只有一个元素时，以该元素值构建节点
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        if(nums.size() == 0)
+            return nullptr;
+        return constructMaximumBinaryTreeCore(nums, 0, nums.size()-1);
+    }
+    
+    TreeNode* constructMaximumBinaryTreeCore(vector<int>& nums, int start, int end) {
+        if(start > end)
+            return nullptr;
+        if(start == end) {
+            TreeNode* root = new TreeNode(nums[start]);
+            return root;
+        }
+        
+        int max_ind = start;
+        for(int i = start + 1; i <= end; ++i) {
+            if(nums[i] > nums[max_ind])
+                max_ind = i;
+        }
+        TreeNode* root = new TreeNode(nums[max_ind]);
+        root->left = constructMaximumBinaryTreeCore(nums, start, max_ind - 1);
+        root->right = constructMaximumBinaryTreeCore(nums, max_ind + 1, end);
+        
+        return root;
+    }
+    
+};
