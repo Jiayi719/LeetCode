@@ -1,0 +1,45 @@
+思路：中序遍历序列是否有序
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /* Iteratively */
+    bool isValidBST(TreeNode* root) {
+        if(root == nullptr)
+            return true;
+        
+        stack<TreeNode*> stack_tnode;
+        TreeNode* curr = root;
+        TreeNode* prev = nullptr;
+        while(curr != nullptr || !stack_tnode.empty()) {
+            if(curr != nullptr) {
+                stack_tnode.push(curr);
+                curr = curr->left;
+            }
+            else {
+                curr = stack_tnode.top();
+                stack_tnode.pop();
+                if(prev != nullptr && prev->val >= curr->val)
+                    return false;
+                prev = curr;
+                curr = curr->right;
+            }
+        }
+        
+        return true;
+    }
+    
+    /* Recursively */
+    bool isValidBST(TreeNode* root) {
+        
+        
+    }
+    
+};
