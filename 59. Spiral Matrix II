@@ -1,0 +1,31 @@
+思路：与剑指offer上的29题顺时针打印矩阵比较相似，由外到内对每一圈的元素进行赋值，每一圈又可以分为从左到右、从上到下、从右到左以及从下到上四个部分，
+尤其注意后面三个部分在圆圈退化时有可能不存在，需要附加判断条件，由于本题为方阵，故endX与endY始终是相等的。
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) { 
+        if(n <= 0)
+            return {};
+        
+        vector<int> row(n, 0);
+        vector<vector<int>> matrix(n, row);
+        int val = 1;
+        for(int i = 0; i < (n+1)/2; ++i) {
+            int start = i;
+            int end = n-1-i;
+            for(int x = start; x <= end; ++x)
+                matrix[start][x] = val++;
+            if(end > start) {
+                for(int y = start + 1; y <= end; ++y)
+                    matrix[y][end] = val++;
+                for(int x = end - 1; x >= start; --x)
+                    matrix[end][x] = val++;
+            }
+            if(end > start + 1) {
+                for(int y = end - 1; y >= start + 1; --y)
+                    matrix[y][start] = val++;  
+            }
+        }
+        
+        return matrix;
+    }
+};
