@@ -1,0 +1,38 @@
+思路：通过层序遍历可以发现，如果为完全二叉树，那么空节点不会出现在非空节点之前。在遍历过程中，可以使用变量visited标记是否碰到过空节点，若之后碰到了
+非空节点，则说明不是完全二叉树。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isCompleteTree(TreeNode* root) {
+        if(root == nullptr)
+            return true;
+        
+        queue<TreeNode*> queue_tnode;
+        queue_tnode.push(root);
+        bool visited = false;
+        while(!queue_tnode.empty()) {
+            TreeNode* node = queue_tnode.front();
+            queue_tnode.pop();
+            if(node == nullptr)
+                visited = true;
+            else {
+                if(visited)
+                    return false;
+                else {
+                    queue_tnode.push(node->left);
+                    queue_tnode.push(node->right);
+                }
+            }
+        }
+        
+        return true;
+    }
+};
