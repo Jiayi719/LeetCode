@@ -1,0 +1,51 @@
+方法1：冒泡+递归，冒泡过程中通过变量flag标记是否发生交换，如果某次冒泡没有发生交换，说明链表已经有序，超时
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == nullptr)
+            return nullptr;
+        
+        int len = 0;
+        ListNode* node = head;
+        while(node != nullptr) {
+            ++len;
+            node = node->next;
+        }
+        
+        return sortListCore(head, len);      
+    }
+    
+    ListNode* sortListCore(ListNode* head, int len) {
+        if(len == 1)
+            return head;
+        
+        bool flag = false;
+        ListNode* node = head;
+        for(int i = 1; i < len; ++i) {
+            if(node->val > node->next->val) {
+                int temp = node->val;
+                node->val = node->next->val;
+                node->next->val = temp;
+                flag = true;
+            }
+            node = node->next;
+        }
+        
+        if(flag == false)
+            return head;
+        else
+            return sortListCore(head, len-1);
+    }
+};
+
+
+
+方法2：
