@@ -1,0 +1,34 @@
+思路：碰到这种题目不妨先举两个例子，画着画着兴许就找到规律了。考虑到图像是一个方阵，可以先按主对角线交换两侧的元素，再把每行反转即可，
+如不确定可以再举个栗子
+1 2 3             1 4 7             7 4 1
+4 5 6   ------>   2 5 8   ------>   8 5 2
+7 8 9             3 6 9             9 6 3
+
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        // 先按主对角线交换两侧的元素
+        for(int i = 0; i < matrix.size() - 1; ++i) {
+            for(int j = i + 1; j < matrix[0].size(); ++j) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+                }
+            }
+        
+        // 再把每行反转
+        for(int i = 0; i < matrix.size(); ++i) {
+            int j = 0;
+            int k = matrix[i].size() - 1;
+            while(j < k) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[i][k];
+                matrix[i][k] = temp;
+                ++j;
+                --k;
+            }
+        }
+        
+    }
+};
