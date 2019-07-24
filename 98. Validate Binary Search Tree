@@ -38,8 +38,26 @@ public:
     
     /* Recursively */
     bool isValidBST(TreeNode* root) {
+        if(root == nullptr)
+            return true;
         
+        long min = LONG_MIN;
+        return inOrderTraversal(root, min);
+    }
+    
+    bool inOrderTraversal(TreeNode* curr, long& prev) {
+        if(curr == nullptr)
+            return true;
         
+        if(!inOrderTraversal(curr->left, prev))
+            return false;
+        if(prev >= curr->val)
+            return false;
+        prev = curr->val;
+        if(!inOrderTraversal(curr->right, prev))
+            return false;
+        
+        return true;
     }
     
 };
