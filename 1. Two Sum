@@ -1,5 +1,8 @@
+思路1：Brute Force
+思路2：Hashing
 class Solution {
 public:
+    /* Brute Force */
     vector<int> twoSum(vector<int>& nums, int target) {
         vector<int> indices;
         for(int i = 0; i < nums.size() - 1; ++i)
@@ -14,6 +17,23 @@ public:
             }
         }
         
+        return indices;
+    }
+    /* Hashing */
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> ump;
+        vector<int> indices;
+        
+        for(int i = 0; i < nums.size(); ++i) {
+            if(ump.find(target - nums[i]) != ump.end()) {
+                indices.push_back(i);
+                indices.push_back(ump[target - nums[i]]);
+                break;
+            }
+            else
+                ump[nums[i]] = i;
+        }
+         
         return indices;
     }
 };
