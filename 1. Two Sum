@@ -1,5 +1,4 @@
-思路1：Brute Force
-思路2：Hashing
+思路：第一种方法两重循环暴力破解，第二种方法利用hash table把数组的元素与其索引存储起来，降低查找target−x的时间复杂度
 class Solution {
 public:
     /* Brute Force */
@@ -19,6 +18,7 @@ public:
         
         return indices;
     }
+    
     /* Hashing */
     vector<int> twoSum(vector<int>& nums, int target) {
         unordered_map<int, int> ump;
