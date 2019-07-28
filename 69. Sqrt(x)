@@ -1,0 +1,32 @@
+思路：二分查找，初始边界为[1,x]，注意尽量用除法和减法代替乘法和加法，以防数据溢出
+
+ int mySqrt(int x) {
+        if(x == 0)
+            return 0;
+        
+        int start = 1;
+        int end = x;
+        /* 不要使用(start+end)/2 */
+        int middle = start + (end - start) / 2;
+        while(start < end) {
+            if(middle == start)
+                break;
+            /* 不要使用middle*middle */
+            if(middle < x / middle)
+                start = middle;
+            else if(middle > x / middle)
+                end = middle;
+            else
+                 break;
+            
+            middle = start + (end - start) / 2;
+        }
+        
+        return middle;
+    }
+
+题外话：我们先把题目中的输入改成非负实数，看看怎么实现
+
+
+ 
+ 
