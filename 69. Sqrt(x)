@@ -1,33 +1,30 @@
 思路：二分查找，初始边界为[1,x]，注意尽量使用除法和减法代替乘法和加法，以防数据溢出
-
- int mySqrt(int x) {
-        if(x == 0)
-            return 0;
-        
-        int start = 1;
-        int end = x;
-        /* 不要使用(start+end)/2 */
-        int middle = start + (end - start) / 2;
-        while(start < end) {
-            if(middle == start)
-                break;
-            /* 不要使用middle*middle */
-            if(middle < x / middle)
-                start = middle;
-            else if(middle > x / middle)
-                end = middle;
-            else
-                 break;
-            
-            middle = start + (end - start) / 2;
-        }
-        
-        return middle;
+int mySqrt(int x) {
+    if(x == 0)
+        return 0; 
+    
+    int start = 1;
+    int end = x;
+    /* 不要使用(start+end)/2 */
+    int middle = start + (end - start) / 2;
+    while(start < end) {
+        if(middle == start)
+            break;
+        /* 不要使用middle*middle */
+        if(middle < x / middle)
+            start = middle;
+        else if(middle > x / middle)
+            end = middle;
+        else
+            break;      
+        middle = start + (end - start) / 2;
     }
+        
+    return middle;
+}
 
 题外话：我们先把题目中的输入改成非负实数，看看怎么实现，这里，尤其要注意浮点数的比较（https://zhuanlan.zhihu.com/p/51528623）
 这里，关于左右端点的取值要分情况讨论：当x<=1时，初始二分区间为[x,1]，而当x>1时，初始二分区间为[1,x]（可以通过y=x与y=sqrt(x)的函数图像来分析）
-
 const double eps = 1e-8;
 double mySqrt_BS(double x) {
     double start = 0.0;
@@ -53,5 +50,3 @@ double mySqrt_BS(double x) {
 
     return middle;
 }
-
-此外，还可以通过牛顿迭代法求解
