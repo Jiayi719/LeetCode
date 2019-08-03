@@ -1,4 +1,7 @@
-思路：坑很多，要特别小心
+思路：递归求解，坑很多，要特别小心
+首先，要注意当x=0时，n必须为正数
+然后，要注意当n<0时，-n可能会溢出（当INT_MIN=-2147483648，INT_MAX=2147483647，如n=-2147483648，则-n=-2147483648），利用x^n = x^(-1) * x^(n+1)求解
+
 class Solution {
 public:
     double myPow(double x, int n) {
@@ -28,6 +31,5 @@ public:
             result *= x;
         
         return result;
-    }
-    
+    }   
 };
