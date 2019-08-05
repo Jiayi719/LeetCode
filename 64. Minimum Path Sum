@@ -1,0 +1,28 @@
+思路：跟62. Unique Paths类似，利用动态规划求解
+
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        if(grid.size() == 0 || grid[0].size() == 0)
+            return 0;
+        
+        int rows = grid.size();
+        int cols = grid[0].size();
+        
+        vector<vector<int>> path_sum(rows, vector<int>(cols, 0));
+        path_sum[0][0] = grid[0][0];
+        for(int i = 1; i < rows; ++i)
+            path_sum[i][0] = path_sum[i-1][0] + grid[i][0];
+        for(int j = 1; j < cols; ++j)
+            path_sum[0][j] = path_sum[0][j-1] + grid[0][j];
+        for(int i = 1; i < rows; ++i) {
+            for(int j = 1; j < cols; ++j) {
+               int min_sum = path_sum[i-1][j] < path_sum[i][j-1] ? path_sum[i-1][j] : path_sum[i][j-1];
+               path_sum[i][j] = min_sum + grid[i][j];
+            }
+        }
+            
+        return path_sum[rows-1][cols-1];
+    }
+    
+};
