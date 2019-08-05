@@ -1,0 +1,37 @@
+思路：跟62. Unique Paths类似，利用动态规划求解
+
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        if(obstacleGrid.size() == 0 || obstacleGrid[0].size() == 0)
+            return 0;
+        
+        int rows = obstacleGrid.size();
+        int cols = obstacleGrid[0].size();
+        // 注意这里使用unsigned int，是因为在leetcode里path_num[i][j]=path_num[i-1][j]+path_num[i][j-1]会溢出
+        vector<vector<unsigned int>> path_num(rows, vector<unsigned int>(cols, 0));
+        path_num[0][0] = 1 - obstacleGrid[0][0];
+        for(int i = 1; i < rows; ++i) {
+            if(path_num[i-1][0] == 1 && obstacleGrid[i][0] == 0)
+                path_num[i][0] = 1;
+            else
+                path_num[i][0] = 0;
+        }
+        for(int j = 1; j < cols; ++j) {
+            if(path_num[0][j-1] == 1 && obstacleGrid[0][j] == 0)
+                path_num[0][j] = 1;
+            else
+                path_num[0][j] = 0;
+        }
+        for(int i = 1; i < rows; ++i) {
+            for(int j = 1; j < cols; ++j) {
+                if(obstacleGrid[i][j] == 0)
+                    path_num[i][j] = path_num[i-1][j] + path_num[i][j-1];
+                else
+                    path_num[i][j] = 0;
+            }
+        }
+        
+        return path_num[rows-1][cols-1];
+    }
+};
