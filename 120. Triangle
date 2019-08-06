@@ -1,1 +1,25 @@
-思路：
+思路：利用一个跟三角形同样大小的二维数组把到三角形的每一行的每一个节点的最小路径和都保存起来，取最底下一行的最小值即为要求的结果
+
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        if(triangle.size() == 0)
+            return 0;
+        
+        int rows = triangle.size();
+        vector<vector<int>> path_sum = triangle;
+        
+        for(int i = 1; i < rows; ++i) {
+            for(int j = 0; j <= i; ++j) {
+                if(j == 0)
+                    path_sum[i][j] = path_sum[i-1][j] + triangle[i][j];
+                else if(j == i)
+                    path_sum[i][j] = path_sum[i-1][j-1] + triangle[i][j];
+                else
+                    path_sum[i][j] = min(path_sum[i-1][j-1], path_sum[i-1][j]) + triangle[i][j];
+            }
+        }
+        
+        return *min_element(path_sum[rows-1].begin(), path_sum[rows-1].end());
+    }
+};
