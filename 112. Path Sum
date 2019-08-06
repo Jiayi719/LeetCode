@@ -1,0 +1,12 @@
+思路：由于路径是从根节点出发到叶节点，也就是说路径总是以根节点为起始点，故需要先序遍历二叉树。这里采用递归的方式实现，
+要注意，递归的终止条件有两个，当输入节点为空时返回false，当输入节点为叶节点且其val等于输入sum时返回true
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        if(root == NULL)
+            return false;
+        if(root->left == NULL && root->right == NULL && root->val == sum)
+            return true;
+        return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
+    }
+};
