@@ -23,3 +23,32 @@ public:
         return *min_element(path_sum[rows-1].begin(), path_sum[rows-1].end());
     }
 };
+
+优化：不需要保存所有节点的最小路径和，只需要分别用两个大小为三角形层数的一维数组保存上一层节点和当前层节点的最小路径和
+
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        if(triangle.size() == 0)
+            return 0;
+        
+        int rows = triangle.size();
+        vector<int> prev_path_sum(rows, 0);
+        vector<int> curr_path_sum(rows, 0);
+        prev_path_sum[0] = triangle[0][0];
+        
+        for(int i = 1; i < rows; ++i) {
+            for(int j = 0; j <= i; ++j) {
+                if(j == 0)
+                    curr_path_sum[j] = prev_path_sum[j] + triangle[i][j];
+                else if(j == i)
+                    curr_path_sum[j] = prev_path_sum[j-1] + triangle[i][j];
+                else
+                    curr_path_sum[j] = min(prev_path_sum[j-1], prev_path_sum[j]) + triangle[i][j];
+            }
+            prev_path_sum = curr_path_sum;
+        }
+        
+        return *min_element(prev_path_sum.begin(), prev_path_sum.end());
+    }
+};
