@@ -1,0 +1,38 @@
+思路：大体上与46. Permutations一样，需要注意的是对于重复数字的处理
+
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> permutations;
+        if(nums.size() > 0)
+            permuteUniqueCore(nums, 0, permutations);
+        return permutations;
+    }
+    
+    void permuteUniqueCore(vector<int>& nums, int start, vector<vector<int>>& permutations) {
+        if(start == nums.size())
+            permutations.push_back(nums);
+        else {
+            for(int index = start; index < nums.size(); ++index) {
+                if(needSwap(nums, start, index)) {
+                    int temp = nums[index];
+                    nums[index] = nums[start];
+                    nums[start] = temp;
+                
+                    permuteUniqueCore(nums, start+1, permutations);
+                
+                    temp = nums[index];
+                    nums[index] = nums[start];
+                    nums[start] = temp;
+                }
+            }
+        }
+    }
+    
+    bool needSwap(vector<int>& nums, int start, int index) {
+        for(int i = start; i < index; ++i)
+            if(nums[i] == nums[index])
+                return false;
+        return true;
+    }
+};
