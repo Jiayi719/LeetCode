@@ -1,1 +1,34 @@
-思路：跟112. Path Sum类似，也需要先序遍历二叉树，由于需要打印出所有满足条件的路径，所以这里采用非递归的方式实现，
+思路：跟112. Path Sum类似，也需要先序遍历二叉树，这里采用递归的方式实现。注意，当前节点访问结束后，递归函数将自动回到它的父节点，因此，
+在函数退出之前要在路径上删除当前节点，详细分析过程参见剑指offer面试题34的讲解
+
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        int curr_sum = 0;
+        vector<int> path;
+        vector<vector<int>> path_vect;
+        
+        findPath(root, sum, curr_sum, path, path_vect);
+   
+        return path_vect;
+    }
+    
+    void findPath(TreeNode* root, int sum, int curr_sum, vector<int>& path, vector<vector<int>>& path_vect) {
+        if(root == NULL)
+            return;
+        
+        curr_sum += root->val;
+        path.push_back(root->val);
+        
+        bool is_leaf = (root->left == NULL && root->right == NULL);
+        if(is_leaf && curr_sum == sum)
+            path_vect.push_back(path);
+        
+        if(root->left != NULL)
+            findPath(root->left, sum, curr_sum, path, path_vect);
+        if(root->right != NULL)
+            findPath(root->right, sum, curr_sum, path, path_vect);
+        
+        path.pop_back();
+    }
+};
