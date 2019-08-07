@@ -1,0 +1,58 @@
+思路：数值转换部分比较好理解，关键是对非法输入的处理，要养成在写代码之前考虑所有可能的测试用例的习惯，参见剑指offer面试题67
+
+class Solution {
+public:
+    int myAtoi(string str) {
+        if(str.empty())
+            return 0;
+        
+        int start = 0;
+        while(start < str.length()) {
+            if(str[start] != ' ')
+                break;
+            ++start;
+        }
+        
+        long long num = 0;
+        
+        if(start < str.length() && 
+           (str[start] == '+' || str[start] == '-' || (str[start] >= '0' && str[start] <= '9'))) {
+            bool minus = false;
+            if(str[start] == '+')
+                ++start;
+            else if(str[start] == '-') {
+                minus = true;
+                ++start;
+            }
+            
+            if(start < str.length())
+                num = myAtoiCore(str, start, minus);
+        }
+        
+        return (int)num;
+    }
+    
+private:
+    long long myAtoiCore(string str, int start, bool minus) {
+        long long num = 0;
+        int flag = minus ? -1 : 1;
+        while(start < str.length()) {
+            if(str[start] >= '0' && str[start] <= '9') {
+                num = num * 10 + flag * (str[start] - '0');
+                if(!minus && num > INT_MAX) {
+                    num = INT_MAX;
+                    break;
+                }
+                if(minus && num < INT_MIN) {
+                    num = INT_MIN;
+                    break;
+                }
+                ++start;
+            }
+            else
+                break;
+        }
+        
+        return num;
+    }
+};
