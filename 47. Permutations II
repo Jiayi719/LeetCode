@@ -1,4 +1,5 @@
-思路：大体上与46. Permutations一样，需要注意的是对于重复数字的处理
+思路：大体上与46. Permutations一样，需要注意的是去掉重复全排列的处理方式，如果在[start,index)区间内有元素与下标为index的元素相等，
+则说明下标为index的元素在当前序列第一个位置出现过，不能计入全排列中。
 
 class Solution {
 public:
@@ -29,6 +30,7 @@ public:
         }
     }
     
+    /* 在[start,index)区间内是否有元素与下标为index的元素相等 */
     bool needSwap(vector<int>& nums, int start, int index) {
         for(int i = start; i < index; ++i)
             if(nums[i] == nums[index])
