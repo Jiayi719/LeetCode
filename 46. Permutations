@@ -1,4 +1,4 @@
-思路：可以把序列看成两部分，第一部分是它的第一个元素，第二部分是第一个元素后面所有的元素。求序列的全排列，可以分成两步。
+思路：可以把序列看成两部分，第一部分是它的第一个元素，第二部分是第一个元素后面所有的元素。求序列的全排列，相应地也可以分成两步。
 第一步求所有可能出现在第一个位置的元素（把第一个元素和后面所有的元素分别进行交换），第二步固定第一个元素并递归地求后面所有的元素组成的序列的全排列，
 详细解答参见剑指offer面试题38的分析过程。
 
@@ -15,6 +15,7 @@ public:
         if(start == nums.size())
             permutations.push_back(nums);
         else {
+            /* 注意第一次循环是第一个元素跟自身交换 */
             for(int index = start; index < nums.size(); ++index) {
                 int temp = nums[index];
                 nums[index] = nums[start];
@@ -22,6 +23,7 @@ public:
                 
                 permuteCore(nums, start+1, permutations);
                 
+                /* 每次循环结束前都会交换回来 */
                 temp = nums[index];
                 nums[index] = nums[start];
                 nums[start] = temp;
