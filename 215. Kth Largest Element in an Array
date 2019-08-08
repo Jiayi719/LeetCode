@@ -1,0 +1,24 @@
+方法1：k次冒泡，可以把第k大的元素放到倒数第k个位置，时间复杂度为O(kN)（N为数组长度），空间复杂度为O(1)
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        bool flag = false;
+        for(int i = 1; i <= k; ++i) {
+            for(int j = 0; j < nums.size()-i; ++j) {
+                if(nums[j] > nums[j+1]) {
+                    int temp = nums[j];
+                    nums[j] = nums[j+1];
+                    nums[j+1] = temp;
+                    flag = true;
+                }
+            }
+            
+            if(flag == false)
+                break;
+        }
+        
+        return nums[nums.size()-k];
+    }
+};
+
+方法2：
