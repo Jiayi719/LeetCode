@@ -1,0 +1,29 @@
+思路：根据公式C(n,k)=C(n-1,k-1)+C(n-1,k)，可以递归求解。
+从尾到头扫描序列，针对扫描到的每一个元素，有两种选择：
+(1)如果把这个元素放到组合中去，则需要在剩下的n-1个元素中选取k-1个元素
+(2)如果不把这个元素放到组合中去，则需要在剩下的n-1个元素中选取k个元素
+
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> comb_vec;
+        vector<int> comb;
+        if(k >= 1 && k <= n)
+            combineCore(n, k, comb_vec, comb);
+        
+        return comb_vec;
+    }
+    
+    void combineCore(int n, int k, vector<vector<int>>& comb_vec, vector<int>& comb) {
+        if(k == 0) {
+            comb_vec.push_back(comb);
+            return;
+        }
+        if(n == 0)
+            return;
+        comb.push_back(n);
+        combineCore(n-1, k-1, comb_vec, comb);
+        comb.pop_back();
+        combineCore(n-1, k, comb_vec, comb);
+    }
+};
