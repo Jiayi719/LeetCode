@@ -1,13 +1,5 @@
-思路：将区间内的节点进行首尾两两交换，啊不对，应该是交换节点的val值，否则涉及太多节点next值的设置，首先找到链表中位置为m和n的节点，交换两个节点的val值，
+思路一：将区间内的节点进行首尾两两交换，啊不对，应该是交换节点的val值，否则涉及太多节点next值的设置，首先找到链表中位置为m和n的节点，交换两个节点的val值，
 然后m往前移动一个位置，n往后移动一个位置，继续交换对应的两个节点的val值，直到m=n或者m>n时停止移动。
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
 class Solution {
 public:
     ListNode* reverseBetween(ListNode* head, int m, int n) {
@@ -37,5 +29,44 @@ public:
         }
         
         return head;
+    }
+};
+思路二：取出需要反转的这一小段链表，反转完后再插入到原先的链表中，思路很直观，但是涉及到很多指针改变指向的操作，容易出错。另外在left为１的时候，需要考虑引入虚拟节点dummy，不然会出错
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        ListNode* sub_head = head;
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* left_prev = dummy;
+        ListNode* right_next = nullptr;
+        
+        // notice left == 1
+        ListNode* curr = head;
+        for (int i = 1; i <= right; ++i) {
+            if (i == left - 1) {
+               left_prev = curr;
+               sub_head = curr->next;
+            }
+            if (i == right) {
+                right_next = curr->next;
+            }
+            curr = curr->next;
+        }
+        
+        ListNode* prev = nullptr;
+        ListNode* temp = nullptr;
+        curr = sub_head;
+        while (curr != right_next) {
+            temp = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        left_prev->next = prev;
+        sub_head->next = right_next;
+        
+        return dummy->next;
+        
     }
 };
