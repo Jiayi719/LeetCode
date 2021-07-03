@@ -1,0 +1,53 @@
+思路一：定义两个指针分别表示子数组的左右边界位置，统计left指针在每个位置时满足条件的子数组，从中挑选出长度最短的即可，
+对于left指针在某个位置时，right指针从left指针开始，计算子数组的元素和，如果满足条件则将left往右移动一位，否则将right往右移动一位
+int minSubArrayLen(int target, vector<int>& nums) {
+    int left = 0;
+    int right = 0;
+    int res = nums.size() + 1;
+    while (left < nums.size()) {
+        int sum = 0;
+        right = left;
+        while (right < nums.size()) {
+            sum += nums[right];
+            if (sum >= target) {
+                break;
+            }
+            else {
+               right++;
+            }
+        }
+        if ((sum >=target) && (right - left + 1 < res)) {
+            res = right - left + 1;
+        }
+        left++;
+    }
+    if (res == nums.size() + 1)
+        return 0;
+    else
+        return res;
+}
+
+思路二：分析思路一的实现可以发现，每次left指针移到一个新的位置，sum都需要重新从头开始计算，因此可以从此处入手减少一些重复计算
+int minSubArrayLen(int target, vector<int>& nums) {
+    int left = 0;
+    int right = -1;
+    int sum = 0;
+    int res = nums.size() + 1;
+    while (left < nums.size()) {
+        if (right + 1 < nums.size() && sum < target) {
+            right++;
+            sum += nums[right];
+        }
+        else {
+            sum -= nums[left];
+            left++;              
+        }
+       if(sum >= target && (right - left + 1) < res){
+            res = right - left + 1;
+        }
+    }
+
+    if (res == nums.size() + 1)
+        return 0;
+    return res;
+}
